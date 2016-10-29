@@ -50,18 +50,20 @@ module.exports = {
             			var grandFinalGameTable = $(table).next()
 
 
-            			var games = $('td',grandFinalGameTable);
+            			var gameText = $('td',grandFinalGameTable);
 
-            			var teams = []
+            			var game = {
+                            year : year,
+                            teams:[]
+                        }
 
             			//Raw forms are points.goals, points.goals, points.goals, points.goals
-            			var scoresTeamARaw = $(games.toArray()[1]).text().trim().split(" ");
-            			var scoresTeamBRaw = $(games.toArray()[5]).text().trim().split(" ");
-
+            			var scoresTeamARaw = $(gameText.toArray()[1]).text().trim().split(" ");
+            			var scoresTeamBRaw = $(gameText.toArray()[5]).text().trim().split(" ");
 
             			var a = getGoalsAndPoints(scoresTeamARaw);
-            			teams.push({
-            					name: $(games.toArray()[0]).text(),
+            			game.teams.push({
+            					name: $(gameText.toArray()[0]).text(),
             					quarters: a.quarters,
             					totalGoals: a.totalGoals,
             					totalPoints: a.totalPoints,
@@ -70,8 +72,8 @@ module.exports = {
             			)
 
             			var b = getGoalsAndPoints(scoresTeamBRaw);
-            			teams.push({
-            					name: $(games.toArray()[4]).text(),
+            			game.teams.push({
+            					name: $(gameText.toArray()[4]).text(),
             					quarters: b.quarters,
             					totalGoals: b.totalGoals,
             					totalPoints: b.totalPoints,
@@ -79,7 +81,7 @@ module.exports = {
             				}
             			)
 
-                        resolve(teams);
+                        resolve(game);
 
 
             		}
