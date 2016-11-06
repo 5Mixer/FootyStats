@@ -27,7 +27,22 @@ db.loadDatabase(function (err) {
 		d: 0,
 	}
 
-	db.find({"teams.0.name" : "Collingwood"}, function (err, docs) {
+	var search = {
+		all : {},
+		old : { year : { $lt :  1940}},
+		recent : { year : { $gt :  1976}},
+		teams : [
+			{"teams.0.name":"Western Bulldogs"},
+			{"teams.0.name":"Hawthorn"},
+			{"teams.0.name":"Essendon"},
+			{"teams.0.name":"Sydney"},
+			{"teams.0.name":"Carlton"},
+			{"teams.0.name":"Adelaide"},
+			{"teams.0.name":"West Coast"},
+		]
+	}
+
+	db.find(search.recent, function (err, docs) {
 		console.log(("Analysing "+docs.length+" games.").green);
 		console.log()
 		for (var i = 0; i < docs.length; i++){
@@ -40,10 +55,11 @@ db.loadDatabase(function (err) {
 			var gameDifferenceAtFinal = game.teams[0].quarters[3].totalScore - game.teams[1].quarters[3].totalScore;
 
 
-			if (gameDifferenceAtQuarter > 0) isWinnerWinning.a++;
-			if (gameDifferenceAtHalf > 0) isWinnerWinning.b++;
-			if (gameDifferenceAtThreeQuarter > 0) isWinnerWinning.c++;
-			if (gameDifferenceAtFinal > 0) isWinnerWinning.d++;
+			if (gameDifferenceAtQuarter >= 0) isWinnerWinning.a += 1/docs.length;
+			if (gameDifferenceAtHalf >= 0) isWinnerWinning.b += 1/docs.length;
+			if (gameDifferenceAtThreeQuarter >= 0) isWinnerWinning.c += 1/docs.length;
+			if (gameDifferenceAtFinal >= 0) isWinnerWinning.d += 1/docs.length;
+			//if (gameDifferenceAtFinal < 1) console.log(game.year+game.type)
 
 			winnerWinningByWhat.a += gameDifferenceAtQuarter/docs.length;
 			winnerWinningByWhat.b += gameDifferenceAtHalf/docs.length;

@@ -10,9 +10,9 @@ if (process.argv[2] == true){
 }
 
 db.loadDatabase(function (err) {
-	var finished = _.after(100, complete);
+	var finished = _.after(116, complete);
 
-	for (var year = 1900; year <= 2000; year++){
+	for (var year = 1900; year < 2016; year++){
 		gather.researchYear(year).then(function(game){
 
 			db.insert(game);

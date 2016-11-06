@@ -9,17 +9,6 @@ var colors = require('colors');
 }).catch(function (reason){
 	console.log("Failed : "+reason.stack)
 })*/
-var analysis = new (require('./bestTeamsOverview.js'));
-for (var i = 0; i < 100; i++){
-	var year = 1900 + i;
-
-	gather.researchYear(year).then(function (teams){
-		analysis.accountForYear(year,teams);
-
-		console.log(analysis.teams)
-		console.log("-----------")
-
-	}).catch(function (reason){
-		console.log("Failed : "+reason.stack)
-	})
-}
+gather.researchYear(process.argv[2] || 2016).then(function(games){
+	//console.log(JSON.stringify(games))
+})
